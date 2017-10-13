@@ -17,7 +17,7 @@ namespace SelfHost
                 .UseKestrel()
                 .UseContentRoot(Directory.GetCurrentDirectory())
                 .UseStartup<Startup>()
-                .UseUrls("http://localhost:55000/")
+                .UseIISIntegration()
                 .Build();
 
             host.Run();
@@ -27,9 +27,7 @@ namespace SelfHost
     public class Startup
     {
         // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
-        {
-        }
+        public void ConfigureServices(IServiceCollection services) { }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
@@ -59,19 +57,16 @@ namespace SelfHost
         public string Result { get; set; }
     }
 
-    public class MyServices : Service
+    public class HelloService : Service
     {
         public object Any(Hello request) =>
-            new HelloResponse { Result = $"Hello, {request.Name}!" };
+           new HelloResponse { Result = $"Hello, {request.Name ?? "World"}!" };
     }
 
     public class AppHost : AppHostBase
     {
-        public AppHost()
-            : base("ServiceStack + .NET Core Self Host", typeof(MyServices).GetAssembly()) { }
+        public AppHost() : base("ServiceStack + .NET Core Self Host", typeof(HelloService).GetAssembly()) { }
 
-        public override void Configure(Container container)
-        {
-        }
+        public override void Configure(Container container) { }
     }
 }

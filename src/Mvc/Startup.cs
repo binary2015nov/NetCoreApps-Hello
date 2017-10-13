@@ -70,19 +70,16 @@ namespace Mvc
         public string Result { get; set; }
     }
 
-    public class MyServices : Service
+    public class HelloService : Service
     {
-        public object Any(Hello request) => 
-            new HelloResponse { Result = $"Hello, {request.Name}!" };
+        public object Any(Hello request) =>
+            new HelloResponse { Result = $"Hello, {request.Name ?? "world"}!" };        
     }
 
     public class AppHost : AppHostBase
     {
-        public AppHost() 
-            : base("ServiceStack + .NET Core MVC", typeof(MyServices).GetAssembly()) {}
+        public AppHost() : base("ServiceStack + .NET Core MVC", typeof(HelloService).GetAssembly()) { }
 
-        public override void Configure(Container container)
-        {
-        }
+        public override void Configure(Container container) { }
     }
 }

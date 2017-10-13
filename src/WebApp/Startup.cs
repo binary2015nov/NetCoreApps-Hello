@@ -13,9 +13,7 @@ namespace WebApp
     {
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit http://go.microsoft.com/fwlink/?LinkID=398940
-        public void ConfigureServices(IServiceCollection services)
-        {
-        }
+        public void ConfigureServices(IServiceCollection services) { }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
@@ -50,19 +48,16 @@ namespace WebApp
         public string Result { get; set; }
     }
 
-    public class MyServices : Service
+    public class HelloService : Service
     {
         public object Any(Hello request) =>
-            new HelloResponse { Result = $"Hello, {request.Name}!" };
+            new HelloResponse { Result = $"Hello, {request.Name ?? "World"}!" };
     }
 
     public class AppHost : AppHostBase
     {
-        public AppHost()
-            : base("ServiceStack + .NET Core Web App", typeof(MyServices).GetAssembly()) { }
+        public AppHost() : base("ServiceStack + .NET Core Web App", typeof(HelloService).GetAssembly()) { }
 
-        public override void Configure(Container container)
-        {
-        }
+        public override void Configure(Container container) { }
     }
 }
