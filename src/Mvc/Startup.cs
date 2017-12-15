@@ -37,16 +37,16 @@ namespace Mvc
             
             app.UseStaticFiles();
 
-            app.UseServiceStack(new AppHost 
-            {
-                AppSettings = new NetCoreAppSettings(Configuration)
-            });
-
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
+            });
+
+            app.UseServiceStack(new AppHost
+            {
+                AppSettings = new NetCoreAppSettings(Configuration)
             });
         }
     }
