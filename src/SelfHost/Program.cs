@@ -1,10 +1,8 @@
 ﻿using System.IO;
-using System.Reflection;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
-using Funq;
 using ServiceStack;
 
 namespace SelfHost
@@ -15,7 +13,6 @@ namespace SelfHost
         {
             var host = new WebHostBuilder()
                 .UseKestrel()
-                .UseContentRoot(Directory.GetCurrentDirectory())
                 .UseStartup<Startup>()
                 .UseIISIntegration()
                 .Build();
@@ -35,6 +32,7 @@ namespace SelfHost
             app.UseStaticFiles();
 
             app.UseServiceStack(new AppHost());
+
 
             app.Run(context =>
             {
@@ -59,14 +57,16 @@ namespace SelfHost
 
     public class HelloService : Service
     {
-        public object Any(Hello request) =>
-           new HelloResponse { Result = $"Hello, {request.Name ?? "World"}!" };
+        public object Any(Hello request)
+        {
+            return new HelloResponse { Result = $"Hello, {request.Name ?? "World"}!" };
+        }
     }
 
     public class AppHost : AppHostBase
     {
-        public AppHost() : base("ServiceStack + .NET Core Self Host", typeof(HelloService).GetAssembly()) { }
+        public AppHost() : base("ServiceStack + .NET Core Self Host", typeof(HelloService).Assembly) { }
 
-        public override void Configure(Container container) { }
+        public override void Configure(Funq.Container container) { }
     }
 }

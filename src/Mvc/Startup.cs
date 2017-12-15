@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Funq;
 using ServiceStack;
 
 namespace Mvc
@@ -32,9 +31,6 @@ namespace Mvc
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
-            loggerFactory.AddConsole(Configuration.GetSection("Logging"));
-            loggerFactory.AddDebug();
-
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -44,7 +40,7 @@ namespace Mvc
             {
                 app.UseExceptionHandler("/Home/Error");
             }
-
+            
             app.UseStaticFiles();
 
             app.UseServiceStack(new AppHost());
@@ -78,8 +74,8 @@ namespace Mvc
 
     public class AppHost : AppHostBase
     {
-        public AppHost() : base("ServiceStack + .NET Core MVC", typeof(HelloService).GetAssembly()) { }
+        public AppHost() : base("ServiceStack + .NET Core MVC", typeof(HelloService).Assembly) { }
 
-        public override void Configure(Container container) { }
+        public override void Configure(Funq.Container container) { }
     }
 }

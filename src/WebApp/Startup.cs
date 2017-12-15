@@ -56,7 +56,7 @@ namespace WebApp
 
     public class AppHost : AppHostBase
     {
-        public AppHost() : base("ServiceStack + .NET Core Web App", typeof(HelloService).GetAssembly()) { }
+        public AppHost() : base("ServiceStack + .NET Core Web App", typeof(HelloService).Assembly) { }
 
         public override void Configure(Container container) { }
     }
