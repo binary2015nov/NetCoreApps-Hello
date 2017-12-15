@@ -13,8 +13,9 @@ namespace SelfHost
         {
             var host = new WebHostBuilder()
                 .UseKestrel()
+                .UseContentRoot(Directory.GetCurrentDirectory())
                 .UseStartup<Startup>()
-                .UseIISIntegration()
+                .UseUrls("http://localhost:5000/")
                 .Build();
 
             host.Run();
@@ -59,7 +60,7 @@ namespace SelfHost
     {
         public object Any(Hello request)
         {
-            return new HelloResponse { Result = $"Hello, {request.Name ?? "World"}!" };
+            return new HelloResponse { Result = $"Hello, {request.Name}!" };
         }
     }
 
